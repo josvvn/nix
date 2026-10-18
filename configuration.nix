@@ -206,6 +206,8 @@
                 oneko
                 discord
                 gh
+                vlc
+                obs-studio
                 vinegar
         ];
 
@@ -309,22 +311,9 @@
     # ======= NIX-LD END =======
     # ======= NIX-LD END =======
 
-    services.clamav = {
-        updater.enable = true;
-        daemon.enable = true;
-        daemon.settings.ExcludePath = [
-            "^/proc"
-                "^/sys"
-                "^/dev"
-                "^/run"
-                "^/nix/store"   # already hash-verified, huge, and read-only
-        ];
-        scanner = {
-            enable = true;
-            interval = "Sun *-*-* 03:00:00";  # weekly, Sunday at 3 AM
-                scanDirectories = [ "/" ];
-        };
-    };
+    systemd.coredump.extraConfig = ''
+        MaxUse=100M
+        '';
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
